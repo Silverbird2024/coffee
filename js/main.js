@@ -5,7 +5,8 @@ listbox.options[selIndex+increment].value=selValue;listbox.options[selIndex+incr
 $App.NAB={PageList:["BeanCounter"],PageEnterEffect:[""],PageCount:1,PageExitEffect:[""],PageNumber:1,AppScale:1,PageID:"",Hour:"",Hour24:"",Minute:"",Second:"",Time:"",Time24:"",DateShort:"",DateLong:"",DateFull:"",Month:"",MonthNum:"",WeekNum:"",Day:"",DayNum:"",Year:"",ClientWidth:$window.innerWidth,ClientHeight:$window.innerHeight,WindowWidth:$window.outerWidth,WindowHeight:$window.outerHeight,Orientation:$scope.GetOrientation(),OperatingSystem:"",$Watches:{},$Timers:{},$Audio:{}};$scope.__doUpdate=function(){var Now=new Date();$App.NAB.Hour=$filter("date")(Now,"h");$App.NAB.Hour24=$filter("date")(Now,"H");$App.NAB.Minute=$filter("date")(Now,"mm");$App.NAB.Second=$filter("date")(Now,"ss");$App.NAB.Time=$filter("date")(Now,"mediumTime");$App.NAB.Time24=$filter("date")(Now,"H:mm:ss");$App.NAB.DateShort=$filter("date")(Now,"shortDate");$App.NAB.DateLong=$filter("date")(Now,"longDate");$App.NAB.DateFull=$filter("date")(Now,"fullDate");$App.NAB.Month=$filter("date")(Now,"MMMM");$App.NAB.MonthNum=$filter("date")(Now,"M");$App.NAB.WeekNum=$filter("date")(Now,"w");$App.NAB.Day=$filter("date")(Now,"EEEE");$App.NAB.DayNum=$filter("date")(Now,"d");$App.NAB.Year=$filter("date")(Now,"yyyy");};$scope.__doOrientationChange=function(){$App.NAB.Orientation=$scope.GetOrientation();};$scope.__doResize=function(){$App.NAB.ClientWidth=$window.innerWidth;$App.NAB.ClientHeight=$window.innerHeight;$App.NAB.WindowWidth=$window.outerWidth;$App.NAB.WindowHeight=$window.outerHeight;};$scope.__init=function(){angular.element($window).bind("orientationchange.app",function(){$timeout($scope.__doOrientationChange);});angular.element($window).bind("resize.app",function(){$timeout($scope.__doResize);});$interval($scope.__doUpdate,1000);$App.NAB.OperatingSystem=GetPlatform();$scope.__doUpdate();};
 $scope.BeanCounter_pageenter = function() {$scope.HideObject("cpb","",0);
 $App.Bagweight = localStorage.getItem("bagweight");
-$App.serving = localStorage.getItem("serving");};
+$App.serving = localStorage.getItem("serving");
+$App.kg = localStorage.getItem("kg");};
 angular.element(document).ready( function(){
 $scope.__init();
 neo = angular.element(document.getElementById("ng-view")).scope();neo.Refresh();});
@@ -14,7 +15,9 @@ function debounce(func,wait,immediate){var timeout;return function(){var context
 NeoApp.controller("BeanCounter_Ctrl", function($scope,$rootScope,$route,$timeout,$filter,$window,$animate) {
 $App.NAB.PageNumber = 1;
 $App.NAB.PageID = "BeanCounter";
-$scope.TextInput1_change = function() {localStorage.setItem("bagweight",$App.Bagweight);};
+$scope.TextInput1_change = function() {localStorage.setItem("bagweight",$App.Bagweight);
+$App.kg = $scope.Calculate($App.Bagweight+"/1000",-1);
+localStorage.setItem("kg",$App.kg);};
 $scope.TextInput2_change = function() {localStorage.setItem("serving",$App.serving);};
 $scope.PushButton1_click = function() {$scope.ShowObject("cpb","",0);
 $App.cups = $scope.Calculate($App.Bagweight+"/"+$App.serving,-1);};
